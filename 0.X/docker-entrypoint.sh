@@ -76,16 +76,20 @@ fi
 
 # If we are running Consul, make sure it executes as the proper user.
 if [ "$1" = 'consul' ]; then
+    echo "Checking permissions..."
     # If the data or config dirs are bind mounted then chown them.
     # Note: This checks for root ownership as that's the most common case.
     if [ "$(stat -c %u /consul/data)" != "$(id -u consul)" ]; then
+        echo "Setting data perms"
         chown consul:consul /consul/data
     fi
     if [ "$(stat -c %u /consul/config)" != "$(id -u consul)" ]; then
+        echo "Setting config perms"
         chown consul:consul /consul/config
     fi
     if [ "$(stat -c %u /consul/ssl)" != "$(id -u consul)" ]; then
-        chown consul:consul /consul/ssl
+        echo "Setting ssl perms"
+        chown -R consul:consul /consul/ssl
     fi
 
     # If requested, set the capability to bind to privileged ports before
