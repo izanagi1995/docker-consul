@@ -84,6 +84,9 @@ if [ "$1" = 'consul' ]; then
     if [ "$(stat -c %u /consul/config)" != "$(id -u consul)" ]; then
         chown consul:consul /consul/config
     fi
+    if [ "$(stat -c %u /consul/ssl)" != "$(id -u consul)" ]; then
+        chown consul:consul /consul/ssl
+    fi
 
     # If requested, set the capability to bind to privileged ports before
     # we drop to the non-root user. Note that this doesn't work with all
